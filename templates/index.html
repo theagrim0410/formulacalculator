@@ -4,58 +4,177 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculator for Star Paper Mill</title>
+  <link rel="icon" href="	https://papermartdirectory.com/wp-content/uploads/2022/07/star-paper-mills-logo.jpg" type="image/x-icon">
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-    }
-    .container {
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-      width: 400px;
-      max-width: 90%;
-    }
-    h2 {
-      text-align: center;
-      color: #333;
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-      font-weight: 500;
-    }
-    input, select, button {
-      width: 100%;
-      padding: 8px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      margin-top: 5px;
-      font-size: 14px;
-    }
-    button {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    .result {
-      margin-top: 20px;
-      background: #f1f1f1;
-      padding: 10px;
-      border-radius: 10px;
-    }
+       body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  flex-direction: column;
+  padding: 20px; 
+}
+
+.container {
+  background: white; 
+  padding: 35px 25px;
+  border-radius: 25px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  
+  
+  background-image: url("https://papermartdirectory.com/wp-content/uploads/2022/07/star-paper-mills-logo.jpg");
+  background-repeat: no-repeat;
+  background-position: top center; 
+  background-size: 100px auto; 
+  
+  width: 480px;
+  max-width: 100%;
+  text-align: left;
+  transition: 0.3s ease;
+  padding-top: 100px; 
+}
+
+
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 26px;
+}
+
+label {
+  display: block;
+  margin-top: 30px; /* slightly reduced margin for mobile */
+  font-weight: 600;
+  color: #444;
+}
+
+input, select, button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-top: 6px;
+  font-size: 15px;
+  box-sizing: border-box;
+  transition: 0.2s;
+}
+
+input:focus, select:focus {
+  border-color: #4CAF50;
+  outline: none;
+  box-shadow: 0 0 5px rgba(76,175,80,0.3);
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 25px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+#choice {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-top: 6px;
+  font-size: 15px;
+  box-sizing: border-box;
+  transition: 0.2s;
+}
+
+#choice:focus {
+  border-color: #4CAF50;
+  outline: none;
+  box-shadow: 0 0 5px rgba(76,175,80,0.3);
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.result {
+  margin-top: 25px;
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+}
+
+
+footer {
+  text-align: center;
+  padding: 15px 0;
+  color: #333;
+  font-size: 14px;
+  border-top: 1px solid #ccc;
+  margin-top: 30px;
+}
+
+footer a {
+  color: #4CAF50;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+
+@media (max-width: 600px) {
+  h2 {
+    font-size: 22px;
+  }
+
+  #choice {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+
+  label {
+    margin-top: 20px;
+    font-size: 14px;
+  }
+
+  input, select, button {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .container {
+    padding: 25px 20px;
+    border-radius: 20px;
+  }
+
+  .result {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  h2 {
+    font-size: 20px;
+  }
+
+  #choice {
+    font-size: 13px;
+    padding: 9px;
+  }
+
+  button {
+    font-size: 15px;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -151,6 +270,10 @@
     {% endif %}
   </div>
 
+  <footer>
+    Created by <a href="https://about-frontened.onrender.com/" target="_blank">Agrim Saxena</a>
+  </footer>
+
   <script>
     function showInputs() {
       const choice = document.getElementById("choice").value;
@@ -170,29 +293,22 @@
 
     function validateForm() {
       const choice = document.getElementById("choice").value;
-      if (!choice) {
-        alert("Please select a choice!");
-        return false;
-      }
+      if (!choice) { alert("Please select a choice!"); return false; }
 
-      // Check required inputs based on choice
       if (choice == "0") {
         const T = document.querySelector('input[name="T"]').value;
         if (!T) { alert("Please enter Temperature"); return false; }
-      }
-      else if (choice == "1") {
+      } else if (choice == "1") {
         const d = document.querySelector('input[name="d"]').value;
         const p = document.querySelector('input[name="p"]').value;
         const c = document.querySelector('input[name="c"]').value;
         if (!d || !p || !c) { alert("Please enter d, p, and c"); return false; }
-      }
-      else if (choice == "2") {
+      } else if (choice == "2") {
         const c1 = document.querySelector('input[name="c1"]').value;
         const c2 = document.querySelector('input[name="c2"]').value;
         const r = document.querySelector('input[name="r"]').value;
         if (!c1 || !c2 || !r) { alert("Please enter c1, c2, and r"); return false; }
-      }
-      else if (choice == "3") {
+      } else if (choice == "3") {
         const ch2 = document.getElementById("ch2").value;
         if (!ch2) { alert("Please select sub-choice"); return false; }
         if (ch2 == "0") {
@@ -206,8 +322,7 @@
           const l = document.querySelector('#lf-input input[name="l"]').value;
           if (!lf || !r || !l) { alert("Please enter LF, r, and l"); return false; }
         }
-      }
-      else if (choice == "4") {
+      } else if (choice == "4") {
         const adwt = document.querySelector('input[name="adwt"]').value;
         const moisture = document.querySelector('input[name="moisture"]').value;
         const charge = document.querySelector('input[name="charge"]').value;
@@ -216,7 +331,6 @@
           alert("Please enter ADWT, Moisture, Charge, and WL Strength"); return false;
         }
       }
-
       return true;
     }
   </script>
