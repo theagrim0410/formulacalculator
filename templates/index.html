@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator for Star Paper Mill</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      width: 400px;
+      max-width: 90%;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: 500;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 5px;
+      font-size: 14px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .result {
+      margin-top: 20px;
+      background: #f1f1f1;
+      padding: 10px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Star Paper Mill Calculator</h2>
+    <form method="POST" action="/calculate" onsubmit="return validateForm()">
+      <label>Select Choice:</label>
+      <select name="choice" id="choice" onchange="showInputs()" required>
+        <option value="">--Select--</option>
+        <option value="0">0 - Temperature Integration</option>
+        <option value="1">1 - Calculation using d, p, c</option>
+        <option value="2">2 - Water Requirement</option>
+        <option value="3">3 - Surface & Pulp/LF Calculation</option>
+        <option value="4">4 - Moisture & Liquid Calculation</option>
+      </select>
+
+      <!-- CH 0 -->
+      <div id="inputs-0" style="display:none;">
+        <label>Temperature (K):</label>
+        <input type="number" step="any" name="T">
+      </div>
+
+      <!-- CH 1 -->
+      <div id="inputs-1" style="display:none;">
+        <label>Enter d:</label>
+        <input type="number" step="any" name="d">
+        <label>Enter p:</label>
+        <input type="number" step="any" name="p">
+        <label>Enter c:</label>
+        <input type="number" step="any" name="c">
+      </div>
+
+      <!-- CH 2 -->
+      <div id="inputs-2" style="display:none;">
+        <label>Enter c1:</label>
+        <input type="number" step="any" name="c1">
+        <label>Enter c2:</label>
+        <input type="number" step="any" name="c2">
+        <label>Enter r:</label>
+        <input type="number" step="any" name="r">
+      </div>
+
+      <!-- CH 3 -->
+      <div id="inputs-3" style="display:none;">
+        <label>Select Sub-choice:</label>
+        <select name="ch2" id="ch2" onchange="showSubInputs()">
+          <option value="">--Select--</option>
+          <option value="0">0 - Calculate Pulp per Surface</option>
+          <option value="1">1 - Calculate Pulp using LF</option>
+        </select>
+
+        <div id="pulp-input" style="display:none;">
+          <label>Enter Pulp:</label>
+          <input type="number" step="any" name="pulp">
+          <label>Enter r:</label>
+          <input type="number" step="any" name="r">
+          <label>Enter l:</label>
+          <input type="number" step="any" name="l">
+        </div>
+
+        <div id="lf-input" style="display:none;">
+          <label>Enter LF:</label>
+          <input type="number" step="any" name="lf">
+          <label>Enter r:</label>
+          <input type="number" step="any" name="r">
+          <label>Enter l:</label>
+          <input type="number" step="any" name="l">
+        </div>
+      </div>
+
+      <!-- CH 4 -->
+      <div id="inputs-4" style="display:none;">
+        <label>Enter ADWT:</label>
+        <input type="number" step="any" name="adwt">
+        <label>Enter Moisture (%):</label>
+        <input type="number" step="any" name="moisture">
+        <label>Enter Charge (%):</label>
+        <input type="number" step="any" name="charge">
+        <label>Enter WL Strength (%):</label>
+        <input type="number" step="any" name="wl_strength">
+      </div>
+
+      <button type="submit">Calculate</button>
+    </form>
+
+    {% if result is not none %}
+    <div class="result">
+      <p><strong>Result:</strong> {{ result }}</p>
+      {% if subresult %}
+      <p><strong>WL Required:</strong> {{ subresult }}</p>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+
+  <script>
+    function showInputs() {
+      const choice = document.getElementById("choice").value;
+      for (let i = 0; i <= 4; i++) {
+        document.getElementById(`inputs-${i}`).style.display = "none";
+      }
+      if (choice !== "") {
+        document.getElementById(`inputs-${choice}`).style.display = "block";
+      }
+    }
+
+    function showSubInputs() {
+      const ch2 = document.getElementById("ch2").value;
+      document.getElementById("pulp-input").style.display = (ch2 === "0") ? "block" : "none";
+      document.getElementById("lf-input").style.display = (ch2 === "1") ? "block" : "none";
+    }
+
+    function validateForm() {
+      const choice = document.getElementById("choice").value;
+      if (!choice) {
+        alert("Please select a choice!");
+        return false;
+      }
+
+      // Check required inputs based on choice
+      if (choice == "0") {
+        const T = document.querySelector('input[name="T"]').value;
+        if (!T) { alert("Please enter Temperature"); return false; }
+      }
+      else if (choice == "1") {
+        const d = document.querySelector('input[name="d"]').value;
+        const p = document.querySelector('input[name="p"]').value;
+        const c = document.querySelector('input[name="c"]').value;
+        if (!d || !p || !c) { alert("Please enter d, p, and c"); return false; }
+      }
+      else if (choice == "2") {
+        const c1 = document.querySelector('input[name="c1"]').value;
+        const c2 = document.querySelector('input[name="c2"]').value;
+        const r = document.querySelector('input[name="r"]').value;
+        if (!c1 || !c2 || !r) { alert("Please enter c1, c2, and r"); return false; }
+      }
+      else if (choice == "3") {
+        const ch2 = document.getElementById("ch2").value;
+        if (!ch2) { alert("Please select sub-choice"); return false; }
+        if (ch2 == "0") {
+          const pulp = document.querySelector('input[name="pulp"]').value;
+          const r = document.querySelector('#pulp-input input[name="r"]').value;
+          const l = document.querySelector('#pulp-input input[name="l"]').value;
+          if (!pulp || !r || !l) { alert("Please enter Pulp, r, and l"); return false; }
+        } else if (ch2 == "1") {
+          const lf = document.querySelector('input[name="lf"]').value;
+          const r = document.querySelector('#lf-input input[name="r"]').value;
+          const l = document.querySelector('#lf-input input[name="l"]').value;
+          if (!lf || !r || !l) { alert("Please enter LF, r, and l"); return false; }
+        }
+      }
+      else if (choice == "4") {
+        const adwt = document.querySelector('input[name="adwt"]').value;
+        const moisture = document.querySelector('input[name="moisture"]').value;
+        const charge = document.querySelector('input[name="charge"]').value;
+        const wl_strength = document.querySelector('input[name="wl_strength"]').value;
+        if (!adwt || !moisture || !charge || !wl_strength) {
+          alert("Please enter ADWT, Moisture, Charge, and WL Strength"); return false;
+        }
+      }
+
+      return true;
+    }
+  </script>
+</body>
+</html>
